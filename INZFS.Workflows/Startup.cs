@@ -13,7 +13,8 @@ namespace INZFS.Workflows
     {
         public override void ConfigureServices(IServiceCollection services)
         {
-            services.AddActivity<GovNotify, GovNotifyDisplayDriver>(); 
+            services.AddActivity<GovNotify, GovNotifyDisplayDriver>();
+            services.AddActivity<GovEmail, GovEmailDriver>();
         }
 
         public override void Configure(IApplicationBuilder builder, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)
