@@ -1,4 +1,5 @@
 ﻿using INZFS.Media.Fields;
+using INZFS.Media.Models;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Metadata.Models;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace INZFS.Media.ViewModels
         public ContentPart Part { get; set; }
         public ContentPartFieldDefinition PartFieldDefinition { get; set; }
 
-        public IList<Models.ResponsiveMediaItem> Media { get; set; }
+        public IList<ResponsiveMediaItem> Media { get; set; }
 
         public bool HasMedia
         {

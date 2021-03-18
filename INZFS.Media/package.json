@@ -1,0 +1,27 @@
+{
+  "dependencies": {
+    "ace-builds": "^1.4.8",
+    "bootstrap": "^4.4.1",
+    "jquery": "^3.5.0",
+    "jquery-ui": "^1.12.1",
+    "vue": "^2.6.11"
+  },
+  "description": "Module for Orchard Core that provides useful content fields.",
+  "devDependencies": {
+    "@types/bootstrap": "^4.3.2",
+    "@types/jquery": "^3.3.34",
+    "copy-webpack-plugin": "^5.1.1",
+    "serialize-javascript": "^5.0.1",
+    "ts-loader": "^6.2.2",
+    "typescript": "^3.8.3",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
+  },
+  "name": "INZFS.Media",
+  "scripts": {
+    "build": "webpack",
+    "develop": "webpack --watch",
+    "start": "npm install && npm run develop"
+  },
+  "version": "0.00.1"
+}
