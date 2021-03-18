@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\INZFS.Media\INZFS.Media.csproj" />
     <ProjectReference Include="..\INZFS.MVC\INZFS.MVC.csproj" />
     <ProjectReference Include="..\INZFS.Workflows\INZFS.Workflows.csproj" />
     <ProjectReference Include="..\Themes\INZFS.Theme.csproj" />
