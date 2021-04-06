@@ -14,7 +14,7 @@
 
 <input type="hidden" name="contentType" value="ProjectDetailsPart" />
 
-<div class="govuk-form-group" asp-validation-error-class-for="Summary"  data-maxlength="200">
+<div class="govuk-form-group" asp-validation-error-class-for="Summary" data-maxlength="200">
     <label class="govuk-label govuk-label--l" asp-for="Summary">
     </label>
     <span asp-validation-for="Summary" class="govuk-error-message"></span>
@@ -46,3 +46,5 @@
         </div>
     </fieldset>
 </div>
+
+@Html.Partial("_Help")
