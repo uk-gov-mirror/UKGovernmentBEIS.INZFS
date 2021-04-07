@@ -3,3 +3,7 @@ applications:
 - instances: 1
   memory: 2G
   route-path: london.cloudapps.digital
+  health-check-type: port
+  health-check-http-endpoint: ''
+  services:
+    - inzfs-mysql-lab1
