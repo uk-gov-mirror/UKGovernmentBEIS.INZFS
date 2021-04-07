@@ -11,5 +11,7 @@ namespace INZFS.MVC.ViewModels
         public OrgFundingViewModel OrgFundingViewModel { get; set; }
         public ProjectDetailsViewModel ProjectDetailsViewModel { get; set; }
         public ProjectSummaryViewModel ProjectSummaryViewModel { get; set; }
+
+        public CompanyDetailsViewModel CompanyDetailsViewModel { get; set; }
     }
 }

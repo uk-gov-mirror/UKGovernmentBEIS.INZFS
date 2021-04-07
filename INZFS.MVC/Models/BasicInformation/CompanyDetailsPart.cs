@@ -17,7 +17,7 @@ namespace INZFS.MVC.Models
 
         [Required(ErrorMessage = "Please enter Company Number")]
         [Display(Name = "Company Number")]
-        public int CompanyNumber { get; set; }
+        public int? CompanyNumber { get; set; }
     }
 
 
