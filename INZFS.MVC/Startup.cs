@@ -7,6 +7,7 @@ using INZFS.MVC.Migrations;
 using INZFS.MVC.Migrations.ProposalWritten;
 using INZFS.MVC.Models;
 using INZFS.MVC.Models.ProposalWritten;
+using INZFS.MVC.Navigations;
 using INZFS.MVC.TagHelpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
@@ -16,7 +17,7 @@ using OrchardCore.ContentManagement.Display.ContentDisplay;
 using OrchardCore.Data.Migration;
 using OrchardCore.DisplayManagement.TagHelpers;
 using OrchardCore.Modules;
-
+using OrchardCore.Navigation;
 
 namespace INZFS.MVC
 {
@@ -32,6 +33,8 @@ namespace INZFS.MVC
             ConfigureContent(services);
 
             services.AddScoped<INavigation, Navigation>();
+
+            services.AddScoped<INavigationProvider, AdminMenu>();
         }
 
         private void ConfigureContent(IServiceCollection services)
