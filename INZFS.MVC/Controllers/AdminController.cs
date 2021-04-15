@@ -59,8 +59,8 @@ namespace INZFS.MVC.Controllers
 
         public ActionResult ChildOne()
         {
-            GetAllApplications();
-            return View();
+            var model = GetAllApplications().Result;
+            return View(model);
         }
 
         public ActionResult ChildTwo()

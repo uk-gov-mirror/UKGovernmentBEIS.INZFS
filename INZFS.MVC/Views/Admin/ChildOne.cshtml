@@ -1,5 +1,5 @@
 
-@model IEnumerable<ApplicationsSummaryModel>
+@model ApplicationsSummaryModel
 @using INZFS.MVC.ViewModels
 @using INZFS.MVC.Models
 @using INZFS.MVC.TagHelpers
@@ -7,13 +7,13 @@
 
 @{
     ViewBag.Title = "Standings";
+    var list = @Model.CompanyDetails.ToList();
 }
 
-@foreach (var x in model)
+@foreach (var x in list)
 {
-    <div>
-        @x.CompanynAME 
-
-        <hr />
-    </div>
+<div>
+    <p>@x.CompanyName</p>
+    <p>@x.CompanyNumber</p>
+</div>
 }
