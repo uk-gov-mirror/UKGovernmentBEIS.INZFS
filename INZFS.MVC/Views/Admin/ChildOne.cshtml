@@ -1,1 +1,19 @@
-<p>View One</p>
+
+@model IEnumerable<ApplicationsSummaryModel>
+@using INZFS.MVC.ViewModels
+@using INZFS.MVC.Models
+@using INZFS.MVC.TagHelpers
+
+
+@{
+    ViewBag.Title = "Standings";
+}
+
+@foreach (var x in model)
+{
+    <div>
+        @x.CompanynAME 
+
+        <hr />
+    </div>
+}
