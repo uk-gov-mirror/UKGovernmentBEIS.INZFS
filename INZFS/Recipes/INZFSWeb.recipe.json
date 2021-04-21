@@ -1,0 +1,2158 @@
+{
+  "name": "INZFS.Web",
+  "displayName": "INZFS.Web",
+  "description": "Recipe creating binding to modules and creating content types on setup",
+  "author": "Lorenzo Lane",
+  "website": "https://inzfs-dev.london.cloudapps.digital",
+  "version": "1.0",
+  "issetuprecipe": "true",
+  "categories": [ "default" ],
+  "tags": [ "Initialise" ],
+  "steps": [
+    {
+      "name": "Feature",
+      "enable": [
+        "Application.Default",
+        "INZFS.Web",
+        "INZFS.MVC",
+        "OrchardCore.Settings",
+        "OrchardCore.Admin",
+        "OrchardCore.Liquid",
+        "OrchardCore.Contents",
+        "OrchardCore.ContentTypes",
+        "OrchardCore.Templates",
+        "OrchardCore.Alias",
+        "OrchardCore.Autoroute",
+        "OrchardCore.Shortcodes",
+        "OrchardCore.ContentFields",
+        "OrchardCore.ContentPreview",
+        "OrchardCore.Deployment",
+        "OrchardCore.Contents.FileContentDefinition",
+        "OrchardCore.CustomSettings",
+        "OrchardCore.Deployment.Remote",
+        "OrchardCore.Diagnostics",
+        "OrchardCore.DynamicCache",
+        "OrchardCore.Resources",
+        "OrchardCore.Email",
+        "OrchardCore.Widgets",
+        "OrchardCore.Features",
+        "OrchardCore.Feeds",
+        "OrchardCore.Flows",
+        "OrchardCore.Forms",
+        "OrchardCore.HomeRoute",
+        "OrchardCore.Html",
+        "OrchardCore.Indexing",
+        "OrchardCore.Scripting",
+        "OrchardCore.Layers",
+        "OrchardCore.Lists",
+        "OrchardCore.Lucene",
+        "OrchardCore.Markdown",
+        "OrchardCore.Media",
+        "OrchardCore.Title",
+        "OrchardCore.Menu",
+        "OrchardCore.Navigation",
+        "OrchardCore.Queries",
+        "OrchardCore.Users",
+        "OrchardCore.Recipes",
+        "OrchardCore.Roles",
+        "OrchardCore.Shortcodes.Templates",
+        "OrchardCore.Themes",
+        "OrchardCore.Users.ChangeEmail",
+        "OrchardCore.Users.Registration",
+        "OrchardCore.Users.ResetPassword",
+        "OrchardCore.Workflows",
+        "OrchardCore.Workflows.Http",
+        "OrchardCore.Workflows.Timers",
+        "INZFS.Theme",
+        "TheAdmin"
+      ]
+    },
+    {
+      "name": "Layers",
+      "Layers": [
+        {
+          "Name": "Everywhere",
+          "Rule": "url('content*')",
+          "Description": null
+        }
+      ]
+    },
+    {
+      "name": "Settings",
+      "LayerSettings": {
+        "Zones": [
+          "Content"
+        ]
+      }
+    },
+    {
+      "name": "Settings",
+      "AdminSettings": {
+        "DisplayDarkMode": true,
+        "DisplayMenuFilter": true,
+        "DisplayNewMenu": true,
+        "DisplayTitlesInTopbar": true
+      },
+      "LoginSettings": {
+        "UseSiteTheme": true,
+        "UseExternalProviderIfOnlyOneDefined": false,
+        "DisableLocalLogin": false,
+        "UseScriptToSyncRoles": false,
+        "SyncRolesScript": "/* Uncomment to map AzureAD\r\nswitch (context.loginProvider) {\r\n    case \"AzureAD\":\r\n        context.externalClaims.forEach(claim => {\r\n            if (claim.Type === \"http://schemas.microsoft.com/ws/2008/06/identity/claims/role\") {\r\n                switch (claim.Value) {\r\n                    case \"Writer\":\r\n                        context.rolesToAdd.push(\"Author\");\r\n                        break;\r\n                    case \"Admin\":\r\n                        context.rolesToAdd.push(\"Administrator\");\r\n                        break;\r\n                    default:\r\n                        log(\"Warning\", \"Role \" + claim.Value + \" was not handled\");\r\n                        break;\r\n                }\r\n            }\r\n        });\r\n    default:\r\n        log(\"Warning\", \"Provider \" + loginProvider + \" was not handled\");\r\n        break;\r\n}\r\n*/\r\n"
+      },
+      "RegistrationSettings": {
+        "UsersCanRegister": 1,
+        "UsersMustValidateEmail": false,
+        "UseSiteTheme": true,
+        "NoPasswordForExternalUsers": false,
+        "NoUsernameForExternalUsers": false,
+        "NoEmailForExternalUsers": false,
+        "UseScriptToGenerateUsername": false,
+        "GenerateUsernameScript": "/* Uncomment to map AzureAD\r\nswitch (context.loginProvider) {\r\n    case \"AzureAD\":\r\n        context.userName = \"azad\" + Date.now().toString();\r\n        break;\r\n    default:\r\n        log(\"Warning\", \"Provider \" + loginProvider + \" was not handled\");\r\n        break;\r\n}\r\n*/\r\n"
+      }
+    },
+    {
+      "name": "Roles",
+      "Roles": [
+        {
+          "Name": "Authenticated",
+          "Description": "Authenticated role",
+          "Permissions": [
+            "ViewContent"
+          ]
+        },
+        {
+          "Name": "Anonymous",
+          "Description": "Anonymous role",
+          "Permissions": [
+            "ViewContent"
+          ]
+        },
+        {
+          "Name": "Moderator",
+          "Description": "Moderator role",
+          "Permissions": [
+            "AccessAdminPanel",
+            "ManageOwnUserInformation"
+          ]
+        },
+        {
+          "Name": "Contributor",
+          "Description": "Contributor role",
+          "Permissions": [
+            "AccessAdminPanel",
+            "EditOwnContent",
+            "PreviewOwnContent",
+            "CloneOwnContent",
+            "ManageMediaContent",
+            "ManageOwnUserInformation"
+          ]
+        },
+        {
+          "Name": "Author",
+          "Description": "Author role",
+          "Permissions": [
+            "AccessAdminPanel",
+            "PublishOwnContent",
+            "EditOwnContent",
+            "DeleteOwnContent",
+            "PreviewOwnContent",
+            "CloneOwnContent",
+            "ManageMediaContent",
+            "ManageOwnUserInformation"
+          ]
+        },
+        {
+          "Name": "Administrator",
+          "Description": "Administrator role",
+          "Permissions": [
+            "ManageSettings",
+            "AccessAdminPanel",
+            "ManageAdminSettings",
+            "PublishContent",
+            "EditContent",
+            "DeleteContent",
+            "PreviewContent",
+            "CloneContent",
+            "AccessContentApi",
+            "ListContent",
+            "ViewContentTypes",
+            "EditContentTypes",
+            "ManageTemplates",
+            "ManageAdminTemplates",
+            "SetHomepage",
+            "ManageShortcodeTemplates",
+            "Import",
+            "Export",
+            "ManageFeatures",
+            "ManageLayers",
+            "ManageIndexes",
+            "ManageMediaContent",
+            "ManageAttachedMediaFieldsFolder",
+            "ManageMediaProfiles",
+            "ViewMediaOptions",
+            "ManageMenu",
+            "ManageQueries",
+            "ManageUsers",
+            "ManageRoles",
+            "AssignRoles",
+            "SiteOwner",
+            "ApplyTheme",
+            "ManageEmailSettings",
+            "ManageWorkflows",
+            "ExecuteWorkflows"
+          ]
+        },
+        {
+          "Name": "Editor",
+          "Description": "Editor role",
+          "Permissions": [
+            "AccessAdminPanel",
+            "PublishContent",
+            "EditContent",
+            "DeleteContent",
+            "PreviewContent",
+            "CloneContent",
+            "ListContent",
+            "ManageTemplates",
+            "ManageShortcodeTemplates",
+            "QueryLuceneApi",
+            "ManageMediaContent",
+            "ManageQueries",
+            "ManageOwnUserInformation",
+            "ManageWorkflows",
+            "ExecuteWorkflows"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ContentDefinition",
+      "ContentTypes": [
+        {
+          "Name": "LinkMenuItem",
+          "DisplayName": "Link Menu Item",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Stereotype": "MenuItem"
+            }
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "LinkMenuItemPart",
+              "Name": "LinkMenuItemPart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "0"
+                }
+              }
+            },
+            {
+              "PartName": "LinkMenuItem",
+              "Name": "LinkMenuItem",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "1"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "ContentMenuItem",
+          "DisplayName": "Content Menu Item",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Stereotype": "MenuItem"
+            },
+            "FullTextAspectSettings": {}
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "ContentMenuItemPart",
+              "Name": "ContentMenuItemPart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "0"
+                }
+              }
+            },
+            {
+              "PartName": "ContentMenuItem",
+              "Name": "ContentMenuItem",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "1"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "BlogPost",
+          "DisplayName": "Blog Post",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Creatable": true,
+              "Listable": true,
+              "Draftable": true,
+              "Versionable": true,
+              "Securable": true
+            },
+            "FullTextAspectSettings": {}
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "BlogPost",
+              "Name": "BlogPost",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "2"
+                }
+              }
+            },
+            {
+              "PartName": "MarkdownBodyPart",
+              "Name": "MarkdownBodyPart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "1",
+                  "Editor": "Wysiwyg"
+                },
+                "ContentIndexSettings": {},
+                "MarkdownBodyPartSettings": {}
+              }
+            },
+            {
+              "PartName": "TitlePart",
+              "Name": "TitlePart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "0"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "Form",
+          "DisplayName": "Form",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Creatable": true,
+              "Listable": true,
+              "Stereotype": "Widget"
+            },
+            "FullTextAspectSettings": {}
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "TitlePart",
+              "Name": "TitlePart",
+              "Settings": {
+                "TitlePartSettings": {
+                  "RenderTitle": false
+                },
+                "ContentTypePartSettings": {
+                  "Position": "0"
+                }
+              }
+            },
+            {
+              "PartName": "FormElementPart",
+              "Name": "FormElementPart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "1"
+                }
+              }
+            },
+            {
+              "PartName": "FormPart",
+              "Name": "FormPart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "2"
+                }
+              }
+            },
+            {
+              "PartName": "FlowPart",
+              "Name": "FlowPart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "3"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "Label",
+          "DisplayName": "Label",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Stereotype": "Widget"
+            }
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "TitlePart",
+              "Name": "TitlePart",
+              "Settings": {
+                "TitlePartSettings": {
+                  "RenderTitle": false
+                }
+              }
+            },
+            {
+              "PartName": "FormElementPart",
+              "Name": "FormElementPart",
+              "Settings": {}
+            },
+            {
+              "PartName": "LabelPart",
+              "Name": "LabelPart",
+              "Settings": {}
+            }
+          ]
+        },
+        {
+          "Name": "Input",
+          "DisplayName": "Input",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Stereotype": "Widget"
+            }
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "FormInputElementPart",
+              "Name": "FormInputElementPart",
+              "Settings": {}
+            },
+            {
+              "PartName": "FormElementPart",
+              "Name": "FormElementPart",
+              "Settings": {}
+            },
+            {
+              "PartName": "InputPart",
+              "Name": "InputPart",
+              "Settings": {}
+            }
+          ]
+        },
+        {
+          "Name": "TextArea",
+          "DisplayName": "Text Area",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Stereotype": "Widget"
+            }
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "FormInputElementPart",
+              "Name": "FormInputElementPart",
+              "Settings": {}
+            },
+            {
+              "PartName": "FormElementPart",
+              "Name": "FormElementPart",
+              "Settings": {}
+            },
+            {
+              "PartName": "TextAreaPart",
+              "Name": "TextAreaPart",
+              "Settings": {}
+            }
+          ]
+        },
+        {
+          "Name": "Select",
+          "DisplayName": "Select",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Stereotype": "Widget"
+            }
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "FormInputElementPart",
+              "Name": "FormInputElementPart",
+              "Settings": {}
+            },
+            {
+              "PartName": "FormElementPart",
+              "Name": "FormElementPart",
+              "Settings": {}
+            },
+            {
+              "PartName": "SelectPart",
+              "Name": "SelectPart",
+              "Settings": {}
+            }
+          ]
+        },
+        {
+          "Name": "Button",
+          "DisplayName": "Button",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Stereotype": "Widget"
+            }
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "FormInputElementPart",
+              "Name": "FormInputElementPart",
+              "Settings": {}
+            },
+            {
+              "PartName": "FormElementPart",
+              "Name": "FormElementPart",
+              "Settings": {}
+            },
+            {
+              "PartName": "ButtonPart",
+              "Name": "ButtonPart",
+              "Settings": {}
+            }
+          ]
+        },
+        {
+          "Name": "ValidationSummary",
+          "DisplayName": "Validation Summary",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Stereotype": "Widget"
+            }
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "ValidationSummaryPart",
+              "Name": "ValidationSummaryPart",
+              "Settings": {}
+            }
+          ]
+        },
+        {
+          "Name": "Validation",
+          "DisplayName": "Validation",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Stereotype": "Widget"
+            }
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "ValidationPart",
+              "Name": "ValidationPart",
+              "Settings": {}
+            }
+          ]
+        },
+        {
+          "Name": "FundApplication",
+          "DisplayName": "Fund Application",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Creatable": true,
+              "Listable": true,
+              "Draftable": true,
+              "Versionable": true,
+              "Securable": true
+            },
+            "FullTextAspectSettings": {}
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "FundApplication",
+              "Name": "FundApplication",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "0"
+                }
+              }
+            },
+            {
+              "PartName": "AliasPart",
+              "Name": "AliasPart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "1"
+                }
+              }
+            },
+            {
+              "PartName": "FormPart",
+              "Name": "FormPart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "2"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "ContactAndOrgDetails",
+          "DisplayName": "Contact And Org Details",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Creatable": true,
+              "Listable": true,
+              "Draftable": true,
+              "Versionable": true,
+              "Securable": true
+            },
+            "FullTextAspectSettings": {}
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "ContactAndOrgDetails",
+              "Name": "ContactAndOrgDetails",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "0"
+                }
+              }
+            },
+            {
+              "PartName": "AliasPart",
+              "Name": "AliasPart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "1"
+                }
+              }
+            },
+            {
+              "PartName": "FormPart",
+              "Name": "FormPart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "2"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "County",
+          "DisplayName": "County",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Creatable": true,
+              "Listable": true,
+              "Draftable": true,
+              "Versionable": true,
+              "Securable": true
+            },
+            "FullTextAspectSettings": {}
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "County",
+              "Name": "County",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "1"
+                }
+              }
+            },
+            {
+              "PartName": "TitlePart",
+              "Name": "TitlePart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "0"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "PersonPage",
+          "DisplayName": "Person Page",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Creatable": true,
+              "Listable": true,
+              "Draftable": true,
+              "Versionable": true,
+              "Securable": true
+            },
+            "FullTextAspectSettings": {}
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "PersonPart",
+              "Name": "PersonPart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "0"
+                }
+              }
+            },
+            {
+              "PartName": "PersonPage",
+              "Name": "PersonPage",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "1"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "ProposalSummaryPart",
+          "DisplayName": "Proposal Summary Part",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Creatable": true,
+              "Listable": true
+            }
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "ProposalSummaryPart",
+              "Name": "ProposalSummaryPart",
+              "Settings": {}
+            }
+          ]
+        },
+        {
+          "Name": "ProjectSummaryPart",
+          "DisplayName": "Project Summary Part",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Creatable": true,
+              "Listable": true
+            }
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "ProjectSummaryPart",
+              "Name": "ProjectSummaryPart",
+              "Settings": {}
+            }
+          ]
+        },
+        {
+          "Name": "ProjectDetailsPart",
+          "DisplayName": "Project Details Part",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Creatable": true,
+              "Listable": true
+            }
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "ProjectDetailsPart",
+              "Name": "ProjectDetailsPart",
+              "Settings": {}
+            }
+          ]
+        },
+        {
+          "Name": "OrgFundingPart",
+          "DisplayName": "Org Funding Part",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Creatable": true,
+              "Listable": true
+            }
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "OrgFundingPart",
+              "Name": "OrgFundingPart",
+              "Settings": {}
+            }
+          ]
+        },
+        {
+          "Name": "ProjectProposalDetails",
+          "DisplayName": "Project Proposal Details",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Creatable": true,
+              "Listable": true
+            }
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "ProjectProposalDetailsPart",
+              "Name": "ProjectProposalDetailsPart",
+              "Settings": {}
+            }
+          ]
+        },
+        {
+          "Name": "ProjectExperience",
+          "DisplayName": "Project Experience",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Creatable": true,
+              "Listable": true
+            }
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "ProjectExperiencePart",
+              "Name": "ProjectExperiencePart",
+              "Settings": {}
+            }
+          ]
+        },
+        {
+          "Name": "CompanyDetails",
+          "DisplayName": "Company Details",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Creatable": true,
+              "Listable": true
+            }
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "CompanyDetailsPart",
+              "Name": "CompanyDetailsPart",
+              "Settings": {}
+            }
+          ]
+        }
+      ],
+      "ContentParts": [
+        {
+          "Name": "LiquidPart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Attachable": true,
+              "Description": "Provides a Liquid formatted body for your content item."
+            }
+          },
+          "ContentPartFieldDefinitionRecords": []
+        },
+        {
+          "Name": "CommonPart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Attachable": true,
+              "Description": "Provides an editor for the common properties of a content item."
+            }
+          },
+          "ContentPartFieldDefinitionRecords": []
+        },
+        {
+          "Name": "AliasPart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Attachable": true,
+              "Description": "Provides a way to define custom aliases for content items."
+            }
+          },
+          "ContentPartFieldDefinitionRecords": []
+        },
+        {
+          "Name": "AutoroutePart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Attachable": true,
+              "Description": "Provides a custom url for your content item."
+            }
+          },
+          "ContentPartFieldDefinitionRecords": []
+        },
+        {
+          "Name": "PreviewPart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Attachable": true,
+              "Description": "Provides a way to define the url that is used to render your content item for preview. You only need to use this for the content preview feature when running the frontend decoupled from the admin."
+            }
+          },
+          "ContentPartFieldDefinitionRecords": []
+        },
+        {
+          "Name": "WidgetsListPart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Attachable": true,
+              "Description": "Provides a way to add widgets to Layout zones for your content item."
+            }
+          },
+          "ContentPartFieldDefinitionRecords": []
+        },
+        {
+          "Name": "FlowPart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Attachable": true,
+              "Description": "Provides a customizable body for your content item where you can build a content structure with widgets."
+            }
+          },
+          "ContentPartFieldDefinitionRecords": []
+        },
+        {
+          "Name": "BagPart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Attachable": true,
+              "Reusable": true,
+              "Description": "Provides a collection behavior for your content item where you can place other content items."
+            }
+          },
+          "ContentPartFieldDefinitionRecords": []
+        },
+        {
+          "Name": "HtmlBodyPart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Attachable": true,
+              "Description": "Provides an HTML Body for your content item."
+            }
+          },
+          "ContentPartFieldDefinitionRecords": []
+        },
+        {
+          "Name": "ListPart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Attachable": true,
+              "Description": "Add a list behavior."
+            }
+          },
+          "ContentPartFieldDefinitionRecords": []
+        },
+        {
+          "Name": "MarkdownBodyPart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Attachable": true,
+              "Description": "Provides a Markdown formatted body for your content item."
+            }
+          },
+          "ContentPartFieldDefinitionRecords": []
+        },
+        {
+          "Name": "TitlePart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Attachable": true,
+              "Description": "Provides a Title for your content item.",
+              "DefaultPosition": "0"
+            }
+          },
+          "ContentPartFieldDefinitionRecords": []
+        },
+        {
+          "Name": "MenuPart",
+          "Settings": {},
+          "ContentPartFieldDefinitionRecords": []
+        },
+        {
+          "Name": "MenuItemPart",
+          "Settings": {},
+          "ContentPartFieldDefinitionRecords": []
+        },
+        {
+          "Name": "LinkMenuItemPart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Attachable": true,
+              "Description": "Provides a menu link behavior for your content item."
+            }
+          },
+          "ContentPartFieldDefinitionRecords": []
+        },
+        {
+          "Name": "ContentMenuItemPart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Attachable": true,
+              "DisplayName": "Content Menu Item",
+              "Description": "Provides a menu link behavior with the Content Picker for your content item."
+            }
+          },
+          "ContentPartFieldDefinitionRecords": [
+            {
+              "FieldName": "ContentPickerField",
+              "Name": "SelectedContentItem",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Selected Content Item",
+                  "Position": "0"
+                },
+                "ContentPickerFieldSettings": {
+                  "Required": true,
+                  "DisplayAllContentTypes": true,
+                  "DisplayedContentTypes": []
+                },
+                "ContentIndexSettings": {}
+              }
+            }
+          ]
+        },
+        {
+          "Name": "FormPart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Attachable": true,
+              "Description": "Turns your content item into a form."
+            }
+          },
+          "ContentPartFieldDefinitionRecords": []
+        },
+        {
+          "Name": "FormElementPart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Description": "Provides attributes common to all form elements."
+            }
+          },
+          "ContentPartFieldDefinitionRecords": []
+        },
+        {
+          "Name": "FormInputElementPart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Description": "Provides attributes common to all input form elements."
+            }
+          },
+          "ContentPartFieldDefinitionRecords": []
+        },
+        {
+          "Name": "LabelPart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Description": "Provides label properties."
+            }
+          },
+          "ContentPartFieldDefinitionRecords": []
+        },
+        {
+          "Name": "InputPart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Description": "Provides input field properties."
+            }
+          },
+          "ContentPartFieldDefinitionRecords": []
+        },
+        {
+          "Name": "TextAreaPart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Description": "Provides text area properties."
+            }
+          },
+          "ContentPartFieldDefinitionRecords": []
+        },
+        {
+          "Name": "SelectPart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Description": "Provides select field properties."
+            }
+          },
+          "ContentPartFieldDefinitionRecords": []
+        },
+        {
+          "Name": "ButtonPart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Description": "Provides button properties."
+            }
+          },
+          "ContentPartFieldDefinitionRecords": []
+        },
+        {
+          "Name": "ValidationSummaryPart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Description": "Displays a validation summary."
+            }
+          },
+          "ContentPartFieldDefinitionRecords": []
+        },
+        {
+          "Name": "ValidationPart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Description": "Displays a field validation error."
+            }
+          },
+          "ContentPartFieldDefinitionRecords": []
+        },
+        {
+          "Name": "FundApplication",
+          "Settings": {},
+          "ContentPartFieldDefinitionRecords": [
+            {
+              "FieldName": "TextField",
+              "Name": "BusinessName",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Business Name",
+                  "Position": "0"
+                },
+                "TextFieldSettings": {
+                  "Required": true
+                },
+                "ContentIndexSettings": {}
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "ProjectTitle",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Project Title",
+                  "Position": "1"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "ContactAndOrgDetails",
+          "Settings": {},
+          "ContentPartFieldDefinitionRecords": [
+            {
+              "FieldName": "TextField",
+              "Name": "OrganisationName",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Organisation Name",
+                  "Position": "0"
+                },
+                "TextFieldSettings": {
+                  "Required": true
+                },
+                "ContentIndexSettings": {}
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "AddressLine1",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Address Line 1",
+                  "Position": "2"
+                },
+                "TextFieldSettings": {
+                  "Required": true
+                },
+                "ContentIndexSettings": {}
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "AddressLine2",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Address Line 2",
+                  "Position": "3"
+                },
+                "TextFieldSettings": {
+                  "Required": true
+                },
+                "ContentIndexSettings": {}
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "AddressLine3",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Address Line 3",
+                  "Position": "4"
+                },
+                "TextFieldSettings": {},
+                "ContentIndexSettings": {}
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "TownCity",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Town/City",
+                  "Position": "5"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "Postcode",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Postcode",
+                  "Position": "6"
+                },
+                "TextFieldSettings": {
+                  "Hint": "Format should XY1 4AB",
+                  "Required": true
+                },
+                "ContentIndexSettings": {}
+              }
+            },
+            {
+              "FieldName": "ContentPickerField",
+              "Name": "County",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "County",
+                  "Position": "7"
+                },
+                "ContentPickerFieldSettings": {
+                  "DisplayedContentTypes": [
+                    "County"
+                  ]
+                },
+                "ContentIndexSettings": {}
+              }
+            },
+            {
+              "FieldName": "ContentPickerField",
+              "Name": "Country",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Country",
+                  "Position": "8"
+                },
+                "ContentPickerFieldSettings": {
+                  "Required": true,
+                  "DisplayedContentTypes": []
+                },
+                "ContentIndexSettings": {}
+              }
+            },
+            {
+              "FieldName": "BooleanField",
+              "Name": "NoFunding",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "No Funding",
+                  "Position": "9"
+                }
+              }
+            },
+            {
+              "FieldName": "BooleanField",
+              "Name": "Foundersincludingbankloans",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Founders (including bank loans)",
+                  "Position": "10"
+                },
+                "BooleanFieldSettings": {},
+                "ContentIndexSettings": {}
+              }
+            },
+            {
+              "FieldName": "BooleanField",
+              "Name": "FriendsandFamily",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Friends and Family",
+                  "Position": "11"
+                }
+              }
+            },
+            {
+              "FieldName": "BooleanField",
+              "Name": "PublicSectorGrants",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Public Sector Grants",
+                  "Position": "12"
+                }
+              }
+            },
+            {
+              "FieldName": "BooleanField",
+              "Name": "AngelInvestment",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Angel Investment",
+                  "Position": "13"
+                }
+              }
+            },
+            {
+              "FieldName": "BooleanField",
+              "Name": "VentureCapital",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Venture Capital",
+                  "Position": "14"
+                }
+              }
+            },
+            {
+              "FieldName": "BooleanField",
+              "Name": "PrivateEquity",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Private Equity",
+                  "Position": "15"
+                }
+              }
+            },
+            {
+              "FieldName": "BooleanField",
+              "Name": "StockMarketFlotation",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Stock Market Flotation",
+                  "Position": "16"
+                }
+              }
+            },
+            {
+              "FieldName": "BooleanField",
+              "Name": "yesnoname",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Does the organisation have a parent company? (If yes you will be asked to provide details)",
+                  "Position": "1"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "County",
+          "Settings": {},
+          "ContentPartFieldDefinitionRecords": []
+        },
+        {
+          "Name": "PersonPart",
+          "Settings": {},
+          "ContentPartFieldDefinitionRecords": [
+            {
+              "FieldName": "TextField",
+              "Name": "Biography",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Biography",
+                  "Editor": "TextArea"
+                },
+                "TextFieldSettings": {
+                  "Hint": "Person's biography"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "PersonPage",
+          "Settings": {},
+          "ContentPartFieldDefinitionRecords": []
+        }
+      ]
+    },
+    {
+      "name": "custom-settings"
+    },
+    {
+      "name": "Themes",
+      "Site": "INZFS.Theme",
+      "Admin": "TheAdmin"
+    },
+    {
+      "name": "Content",
+      "data": [
+        {
+          "ContentItemId": "[js: uuid()]",
+          "ContentType": "BlogPost",
+          "DisplayText": "Glens Blog Post",
+          "Latest": true,
+          "Published": true,
+          "Owner": "[js: parameters('AdminUserId')]",
+          "Author": "[js: parameters('AdminUsername')]",
+          "BlogPost": {},
+          "MarkdownBodyPart": {
+            "Markdown": "made some changes to page"
+          },
+          "TitlePart": {
+            "Title": "Glens Blog Post"
+          }
+        },
+        {
+          "ContentItemId": "[js: uuid()]",
+          "ContentType": "Form",
+          "DisplayText": "Test Form",
+          "Latest": true,
+          "Published": true,
+          "Owner": "[js: parameters('AdminUserId')]",
+          "Author": "[js: parameters('AdminUsername')]",
+          "TitlePart": {
+            "Title": "Test Form"
+          },
+          "FormElementPart": {
+            "Id": "Form1"
+          },
+          "FormPart": {
+            "EnableAntiForgeryToken": true,
+            "Action": "Form1",
+            "Method": "GET",
+            "WorkflowTypeId": null,
+            "EncType": "application/x-www-form-urlencoded"
+          },
+          "FlowPart": {
+            "Widgets": [
+              {
+                "ContentItemId": "4aevts03d51rf2fg51ejgwxv5f",
+                "ContentItemVersionId": null,
+                "ContentType": "Input",
+                "DisplayText": "TextField1",
+                "Latest": false,
+                "Published": false,
+                "ModifiedUtc": "2021-02-24T21:34:14.8609244Z",
+                "PublishedUtc": null,
+                "CreatedUtc": null,
+                "Owner": null,
+                "Author": "admin",
+                "FormInputElementPart": {
+                  "Name": "TextField1"
+                },
+                "FormElementPart": {
+                  "Id": "TextField1"
+                },
+                "InputPart": {
+                  "Type": "text",
+                  "DefaultValue": "Enter Text Line here",
+                  "Placeholder": "Empty"
+                },
+                "FlowMetadata": {
+                  "Alignment": 3,
+                  "Size": 100
+                }
+              },
+              {
+                "ContentItemId": "40z030vg408m4xdehndb5j4c5t",
+                "ContentItemVersionId": null,
+                "ContentType": "TextArea",
+                "DisplayText": "TextArea1",
+                "Latest": false,
+                "Published": false,
+                "ModifiedUtc": "2021-02-24T21:34:14.8656608Z",
+                "PublishedUtc": null,
+                "CreatedUtc": null,
+                "Owner": "",
+                "Author": "admin",
+                "FormInputElementPart": {
+                  "Name": "TextArea1"
+                },
+                "FormElementPart": {
+                  "Id": "TextArea1"
+                },
+                "TextAreaPart": {
+                  "DefaultValue": "Enter text here",
+                  "Placeholder": "Empty"
+                },
+                "FlowMetadata": {
+                  "Alignment": 2,
+                  "Size": 100
+                }
+              }
+            ]
+          }
+        },
+        {
+          "ContentItemId": "[js: uuid()]",
+          "ContentType": "Menu",
+          "DisplayText": "Shepherd’s Pie",
+          "Latest": true,
+          "Published": true,
+          "Owner": "[js: parameters('AdminUserId')]",
+          "Author": "[js: parameters('AdminUsername')]",
+          "TitlePart": {
+            "Title": "Shepherd’s Pie"
+          },
+          "AliasPart": {
+            "Alias": "Shepherds pie"
+          },
+          "Menu": {
+            "Price": {
+              "Value": 20.0
+            },
+            "Ingredients": {
+              "Text": "1 pound ground beef 1 cup chopped onion 2 cups frozen corn, thawed 2 cups frozen peas, thawed 2 tablespoons ketchup 1 tablespoon Worcestershire sauce 2 teaspoons minced garlic 1 tablespoon cornstarch 1 teaspoon beef bouillon granules 1/2 cup cold water 1/2 cup sour cream 3-1/2 cups mashed potatoes (prepared with milk and butter) 3/4 cup shredded cheddar cheese"
+            }
+          },
+          "HtmlBodyPart": {
+            "Html": "<p style=\"font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;\">n a large skillet, cook beef and onion over medium heat until meat is no longer pink; drain. Stir in the corn, peas, ketchup, Worcestershire sauce and garlic. Reduce heat to medium-low; cover and cook for 5 minutes.</p><p style=\"font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;\">Combine the cornstarch, bouillon and water until well blended; stir into beef mixture. Bring to a boil over medium heat; cook and stir for 2 minutes or until thickened. Stir in sour cream and heat through (do not boil).</p><p style=\"font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;\">Spread mashed potatoes over the top; sprinkle with cheese. Cover and cook until potatoes are heated through and cheese is melted.</p>"
+          },
+          "MenuPart": {},
+          "@WeldedPartSettings": {
+            "MenuPart": {
+              "Position": "3"
+            },
+            "MenuItemsListPart": {
+              "Position": "4"
+            }
+          },
+          "MenuItemsListPart": {
+            "MenuItems": []
+          }
+        },
+        {
+          "ContentItemId": "[js: uuid()]",
+          "ContentType": "Meal",
+          "DisplayText": "Shepherd’s Pie",
+          "Latest": true,
+          "Published": true,
+          "Owner": "[js: parameters('AdminUserId')]",
+          "Author": "[js: parameters('AdminUsername')]",
+          "Meal": {
+            "Price": {
+              "Value": 20.0
+            },
+            "Ingredients": {
+              "Text": "Test 1"
+            }
+          },
+          "AliasPart": {
+            "Alias": "Shepherds pie2"
+          },
+          "HtmlBodyPart": {
+            "Html": "<p style=\"font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;\">n a large skillet, cook beef and onion over medium heat until meat is no longer pink; drain. Stir in the corn, peas, ketchup, Worcestershire sauce and garlic. Reduce heat to medium-low; cover and cook for 5 minutes.</p><p style=\"font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;\">Combine the cornstarch, bouillon and water until well blended; stir into beef mixture. Bring to a boil over medium heat; cook and stir for 2 minutes or until thickened. Stir in sour cream and heat through (do not boil).</p><p style=\"font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;\">Spread mashed potatoes over the top; sprinkle with cheese. Cover and cook until potatoes are heated through and cheese is melted.</p>"
+          },
+          "TitlePart": {
+            "Title": "Shepherd’s Pie"
+          }
+        },
+        {
+          "ContentItemId": "[js: uuid()]",
+          "ContentType": "FundApplication",
+          "DisplayText": null,
+          "Latest": true,
+          "Published": true,
+          "Owner": "[js: parameters('AdminUserId')]",
+          "Author": "[js: parameters('AdminUsername')]",
+          "FundApplication": {
+            "BusinessName": {
+              "Text": "LLTest"
+            },
+            "ProjectTitle": {
+              "Text": "LLTestProj"
+            }
+          },
+          "AliasPart": {
+            "Alias": "Fundapp1"
+          },
+          "FormPart": {
+            "EnableAntiForgeryToken": true,
+            "Action": null,
+            "Method": "POST",
+            "WorkflowTypeId": null,
+            "EncType": "application/x-www-form-urlencoded"
+          }
+        },
+        {
+          "ContentItemId": "[js: uuid()]",
+          "ContentType": "FundApplication",
+          "DisplayText": null,
+          "Latest": true,
+          "Published": true,
+          "Owner": "[js: parameters('AdminUserId')]",
+          "Author": "[js: parameters('AdminUsername')]",
+          "FundApplication": {
+            "BusinessName": {
+              "Text": "Business Name"
+            },
+            "ProjectTitle": {
+              "Text": "Business Title"
+            }
+          },
+          "AliasPart": {
+            "Alias": ""
+          },
+          "FormPart": {
+            "EnableAntiForgeryToken": true,
+            "Action": null,
+            "Method": "POST",
+            "WorkflowTypeId": null,
+            "EncType": "application/x-www-form-urlencoded"
+          }
+        },
+        {
+          "ContentItemId": "[js: uuid()]",
+          "ContentType": "Form",
+          "DisplayText": "Summary Information",
+          "Latest": true,
+          "Published": true,
+          "Owner": "[js: parameters('AdminUserId')]",
+          "Author": "[js: parameters('AdminUsername')]",
+          "TitlePart": {
+            "Title": "Summary Information"
+          },
+          "FormElementPart": {
+            "Id": null
+          },
+          "FormPart": {
+            "EnableAntiForgeryToken": true,
+            "Action": "/application/handle",
+            "Method": "POST",
+            "WorkflowTypeId": null,
+            "EncType": "application/x-www-form-urlencoded"
+          },
+          "FlowPart": {
+            "Widgets": [
+              {
+                "ContentItemId": "436sz54zq4pj9r4n3zxxwyxzw3",
+                "ContentItemVersionId": null,
+                "ContentType": "Label",
+                "DisplayText": "Name of Application Business",
+                "Latest": false,
+                "Published": false,
+                "ModifiedUtc": "2021-03-03T23:15:22.2797185Z",
+                "PublishedUtc": null,
+                "CreatedUtc": null,
+                "Owner": "",
+                "Author": "admin",
+                "TitlePart": {
+                  "Title": "Name of Application Business"
+                },
+                "FormElementPart": {
+                  "Id": "BusinessNameLabel"
+                },
+                "LabelPart": {
+                  "For": "BusinessName"
+                },
+                "FlowMetadata": {
+                  "Alignment": 3,
+                  "Size": 50
+                }
+              },
+              {
+                "ContentItemId": "4bhkv9e8rjspnw11622axvhn4h",
+                "ContentItemVersionId": null,
+                "ContentType": "Input",
+                "DisplayText": "BusinessName",
+                "Latest": false,
+                "Published": false,
+                "ModifiedUtc": "2021-03-03T23:15:22.2887199Z",
+                "PublishedUtc": null,
+                "CreatedUtc": null,
+                "Owner": "",
+                "Author": "admin",
+                "FormInputElementPart": {
+                  "Name": "BusinessName"
+                },
+                "FormElementPart": {
+                  "Id": "BusinessName"
+                },
+                "InputPart": {
+                  "Type": "text",
+                  "DefaultValue": null,
+                  "Placeholder": "Business Name"
+                },
+                "FlowMetadata": {
+                  "Alignment": 3,
+                  "Size": 50
+                }
+              },
+              {
+                "ContentItemId": "4c95rgxbvrd0x3dqsp72zmk3w9",
+                "ContentItemVersionId": null,
+                "ContentType": "Validation",
+                "DisplayText": null,
+                "Latest": false,
+                "Published": false,
+                "ModifiedUtc": "2021-03-03T23:15:22.2933411Z",
+                "PublishedUtc": null,
+                "CreatedUtc": null,
+                "Owner": null,
+                "Author": "admin",
+                "ValidationPart": {
+                  "For": "BusinessName"
+                },
+                "FlowMetadata": {
+                  "Alignment": 3,
+                  "Size": 100
+                }
+              },
+              {
+                "ContentItemId": "4q5vexhna97qq04m68gdq2nw4k",
+                "ContentItemVersionId": null,
+                "ContentType": "Button",
+                "DisplayText": "Next",
+                "Latest": false,
+                "Published": false,
+                "ModifiedUtc": "2021-03-03T23:15:22.3493619Z",
+                "PublishedUtc": null,
+                "CreatedUtc": null,
+                "Owner": "",
+                "Author": "admin",
+                "FormInputElementPart": {
+                  "Name": "Next"
+                },
+                "FormElementPart": {
+                  "Id": "Next"
+                },
+                "ButtonPart": {
+                  "Text": "Next",
+                  "Type": "submit"
+                },
+                "FlowMetadata": {
+                  "Alignment": 3,
+                  "Size": 100
+                }
+              },
+              {
+                "ContentItemId": "4w374766dkyz5rsjkcvennbx4n",
+                "ContentItemVersionId": null,
+                "ContentType": "Input",
+                "DisplayText": "nextContent",
+                "Latest": false,
+                "Published": false,
+                "ModifiedUtc": "2021-03-03T23:15:22.355639Z",
+                "PublishedUtc": null,
+                "CreatedUtc": null,
+                "Owner": "",
+                "Author": "admin",
+                "FormInputElementPart": {
+                  "Name": "nextContent"
+                },
+                "FormElementPart": {
+                  "Id": "nextContentId"
+                },
+                "InputPart": {
+                  "Type": "hidden",
+                  "DefaultValue": "46fxnraxqw4j802rxda5zrcfd6",
+                  "Placeholder": null
+                },
+                "FlowMetadata": {
+                  "Alignment": 3,
+                  "Size": 100
+                }
+              }
+            ]
+          },
+          "LayerMetadata": {
+            "Position": 1.0,
+            "Zone": "Content",
+            "Layer": "Everywhere",
+            "RenderTitle": true
+          }
+        },
+        {
+          "ContentItemId": "[js: uuid()]",
+          "ContentType": "Form",
+          "DisplayText": "Form2",
+          "Latest": true,
+          "Published": true,
+          "Owner": "[js: parameters('AdminUserId')]",
+          "Author": "[js: parameters('AdminUsername')]",
+          "TitlePart": {
+            "Title": "Form2"
+          },
+          "FormElementPart": {
+            "Id": "form2"
+          },
+          "FormPart": {
+            "EnableAntiForgeryToken": true,
+            "Action": "/application/handle",
+            "Method": "POST",
+            "WorkflowTypeId": null,
+            "EncType": "application/x-www-form-urlencoded"
+          },
+          "FlowPart": {
+            "Widgets": [
+              {
+                "ContentItemId": "405q3aj6156js2hp2d16gy1xn9",
+                "ContentItemVersionId": null,
+                "ContentType": "Label",
+                "DisplayText": "PostCode",
+                "Latest": false,
+                "Published": false,
+                "ModifiedUtc": "2021-03-02T20:39:24.1229417Z",
+                "PublishedUtc": null,
+                "CreatedUtc": null,
+                "Owner": "",
+                "Author": "admin",
+                "TitlePart": {
+                  "Title": "PostCode"
+                },
+                "FormElementPart": {
+                  "Id": "PostCodeLabel"
+                },
+                "LabelPart": {
+                  "For": "PostCode"
+                },
+                "FlowMetadata": {
+                  "Alignment": 3,
+                  "Size": 50
+                }
+              },
+              {
+                "ContentItemId": "4wgxdsf6w7ryfzpm21km7asv4j",
+                "ContentItemVersionId": null,
+                "ContentType": "Input",
+                "DisplayText": "PostCode",
+                "Latest": false,
+                "Published": false,
+                "ModifiedUtc": "2021-03-02T20:39:24.1281641Z",
+                "PublishedUtc": null,
+                "CreatedUtc": null,
+                "Owner": "",
+                "Author": "admin",
+                "FormInputElementPart": {
+                  "Name": "PostCode"
+                },
+                "FormElementPart": {
+                  "Id": "PostCode"
+                },
+                "InputPart": {
+                  "Type": "text",
+                  "DefaultValue": null,
+                  "Placeholder": "PostCode"
+                },
+                "FlowMetadata": {
+                  "Alignment": 3,
+                  "Size": 50
+                }
+              },
+              {
+                "ContentItemId": "4y3rvxyh16vvbr01ynrcef37nd",
+                "ContentItemVersionId": null,
+                "ContentType": "Button",
+                "DisplayText": "Next",
+                "Latest": false,
+                "Published": false,
+                "ModifiedUtc": "2021-03-02T20:39:24.1300893Z",
+                "PublishedUtc": null,
+                "CreatedUtc": null,
+                "Owner": null,
+                "Author": "admin",
+                "FormInputElementPart": {
+                  "Name": "Next"
+                },
+                "FormElementPart": {
+                  "Id": "Next"
+                },
+                "ButtonPart": {
+                  "Text": "Next",
+                  "Type": "submit"
+                },
+                "FlowMetadata": {
+                  "Alignment": 3,
+                  "Size": 100
+                }
+              }
+            ]
+          },
+          "LayerMetadata": {
+            "Position": 2.0,
+            "Zone": "Content",
+            "Layer": "Everywhere",
+            "RenderTitle": false
+          }
+        },
+        {
+          "ContentItemId": "[js: uuid()]",
+          "ContentType": "FundApplication",
+          "DisplayText": null,
+          "Latest": true,
+          "Published": true,
+          "Owner": "[js: parameters('AdminUserId')]",
+          "Author": "[js: parameters('AdminUsername')]",
+          "FundApplication": {
+            "BusinessName": {
+              "Text": "Business Name"
+            },
+            "ProjectTitle": {
+              "Text": "Business Title"
+            }
+          },
+          "AliasPart": {
+            "Alias": ""
+          },
+          "FormPart": {
+            "EnableAntiForgeryToken": true,
+            "Action": null,
+            "Method": null,
+            "WorkflowTypeId": null,
+            "EncType": null
+          }
+        },
+        {
+          "ContentItemId": "[js: uuid()]",
+          "ContentType": "FundApplication",
+          "DisplayText": null,
+          "Latest": true,
+          "Published": true,
+          "Owner": "[js: parameters('AdminUserId')]",
+          "Author": "[js: parameters('AdminUsername')]",
+          "FundApplication": {
+            "BusinessName": {
+              "Text": "dev"
+            },
+            "ProjectTitle": {
+              "Text": "test"
+            }
+          },
+          "AliasPart": {
+            "Alias": ""
+          },
+          "FormPart": {
+            "EnableAntiForgeryToken": true,
+            "Action": null,
+            "Method": null,
+            "WorkflowTypeId": null,
+            "EncType": null
+          }
+        },
+        {
+          "ContentItemId": "[js: uuid()]",
+          "ContentType": "County",
+          "DisplayText": "London",
+          "Latest": true,
+          "Published": true,
+          "Owner": "[js: parameters('AdminUserId')]",
+          "Author": "[js: parameters('AdminUsername')]",
+          "County": {},
+          "TitlePart": {
+            "Title": "London"
+          }
+        },
+        {
+          "ContentItemId": "[js: uuid()]",
+          "ContentType": "County",
+          "DisplayText": "Essex",
+          "Latest": true,
+          "Published": true,
+          "Owner": "[js: parameters('AdminUserId')]",
+          "Author": "[js: parameters('AdminUsername')]",
+          "County": {},
+          "TitlePart": {
+            "Title": "Essex"
+          }
+        },
+        {
+          "ContentItemId": "[js: uuid()]",
+          "ContentType": "PersonPage",
+          "DisplayText": "sunil-nam-update",
+          "Latest": true,
+          "Published": true,
+          "Owner": "[js: parameters('AdminUserId')]",
+          "Author": "[js: parameters('AdminUsername')]",
+          "PersonPart": {
+            "Name": "sunil-nam-update",
+            "Handedness": 0,
+            "BirthDateUtc": "1983-01-11T00:00:00Z",
+            "Biography": {
+              "Text": "test-bio"
+            }
+          },
+          "PersonPage": {
+            "Test": {
+              "Text": "test"
+            }
+          }
+        },
+        {
+          "ContentItemId": "[js: uuid()]",
+          "ContentType": "ProjectSummaryPart",
+          "DisplayText": null,
+          "Latest": true,
+          "Published": true,
+          "Owner": "[js: parameters('AdminUserId')]",
+          "Author": "[js: parameters('AdminUsername')]",
+          "ProjectSummaryPart": {
+            "ProjectName": "Test",
+            "Date": 12,
+            "Month": 12,
+            "Year": 2020
+          }
+        },
+        {
+          "ContentItemId": "[js: uuid()]",
+          "ContentType": "OrgFundingPart",
+          "DisplayText": null,
+          "Latest": true,
+          "Published": true,
+          "Owner": "[js: parameters('AdminUserId')]",
+          "Author": "[js: parameters('AdminUsername')]",
+          "OrgFundingPart": {
+            "Funding": "Founders"
+          }
+        },
+        {
+          "ContentItemId": "[js: uuid()]",
+          "ContentType": "ProjectSummaryPart",
+          "DisplayText": null,
+          "Latest": true,
+          "Published": true,
+          "Owner": "[js: parameters('AdminUserId')]",
+          "Author": "[js: parameters('AdminUsername')]",
+          "ProjectSummaryPart": {
+            "ProjectName": "sddd",
+            "Day": 12,
+            "Month": 12,
+            "Year": 2021
+          }
+        },
+        {
+          "ContentItemId": "[js: uuid()]",
+          "ContentType": "ProjectDetailsPart",
+          "DisplayText": null,
+          "Latest": true,
+          "Published": true,
+          "Owner": "[js: parameters('AdminUserId')]",
+          "Author": "[js: parameters('AdminUsername')]",
+          "ProjectDetailsPart": {
+            "Summary": "dsdsd",
+            "Timing": 0
+          }
+        },
+        {
+          "ContentItemId": "[js: uuid()]",
+          "ContentType": "OrgFundingPart",
+          "DisplayText": null,
+          "Latest": true,
+          "Published": true,
+          "Owner": "[js: parameters('AdminUserId')]",
+          "Author": "[js: parameters('AdminUsername')]",
+          "OrgFundingPart": {
+            "NoFunding": true,
+            "Funders": false,
+            "FriendsAndFamily": false,
+            "PublicSectorGrants": false,
+            "AngelInvestment": false,
+            "VentureCapital": false,
+            "PrivateEquity": false,
+            "StockMarketFlotation": false
+          }
+        },
+        {
+          "ContentItemId": "[js: uuid()]",
+          "ContentType": "ProjectSummaryPart",
+          "DisplayText": null,
+          "Latest": true,
+          "Published": true,
+          "Owner": "[js: parameters('AdminUserId')]",
+          "Author": "[js: parameters('AdminUsername')]",
+          "ProjectSummaryPart": {
+            "ProjectName": "ssdsd",
+            "Day": 10,
+            "Month": 10,
+            "Year": 2022
+          }
+        },
+        {
+          "ContentItemId": "[js: uuid()]",
+          "ContentType": "ProjectSummaryPart",
+          "DisplayText": null,
+          "Latest": true,
+          "Published": true,
+          "Owner": "[js: parameters('AdminUserId')]",
+          "Author": "[js: parameters('AdminUsername')]",
+          "ProjectSummaryPart": {
+            "ProjectName": "sdsd",
+            "Day": 10,
+            "Month": 10,
+            "Year": 2021
+          }
+        },
+        {
+          "ContentItemId": "[js: uuid()]",
+          "ContentType": "ProjectSummaryPart",
+          "DisplayText": null,
+          "Latest": true,
+          "Published": true,
+          "Owner": "[js: parameters('AdminUserId')]",
+          "Author": "[js: parameters('AdminUsername')]",
+          "ProjectSummaryPart": {
+            "ProjectName": "Test1",
+            "Day": 10,
+            "Month": 10,
+            "Year": 2022
+          }
+        },
+        {
+          "ContentItemId": "[js: uuid()]",
+          "ContentType": "ProjectDetailsPart",
+          "DisplayText": null,
+          "Latest": true,
+          "Published": true,
+          "Owner": "[js: parameters('AdminUserId')]",
+          "Author": "[js: parameters('AdminUsername')]",
+          "ProjectDetailsPart": {
+            "Summary": "kdslfkds ds sdfkdslfd dsfdsfdskfl kdsfdsfkdskf ds dsf dsfdf",
+            "Timing": 0
+          }
+        },
+        {
+          "ContentItemId": "[js: uuid()]",
+          "ContentType": "ProjectSummaryPart",
+          "DisplayText": null,
+          "Latest": true,
+          "Published": true,
+          "Owner": "[js: parameters('AdminUserId')]",
+          "Author": "[js: parameters('AdminUsername')]",
+          "ProjectSummaryPart": {
+            "ProjectName": "dsf",
+            "Day": 12,
+            "Month": 12,
+            "Year": 2022
+          }
+        },
+        {
+          "ContentItemId": "[js: uuid()]",
+          "ContentType": "ProjectDetailsPart",
+          "DisplayText": null,
+          "Latest": true,
+          "Published": true,
+          "Owner": "[js: parameters('AdminUserId')]",
+          "Author": "[js: parameters('AdminUsername')]",
+          "ProjectDetailsPart": {
+            "Summary": "Committed to net zero\r\n",
+            "Timing": 1
+          }
+        },
+        {
+          "ContentItemId": "[js: uuid()]",
+          "ContentType": "OrgFundingPart",
+          "DisplayText": null,
+          "Latest": true,
+          "Published": true,
+          "Owner": "[js: parameters('AdminUserId')]",
+          "Author": "[js: parameters('AdminUsername')]",
+          "OrgFundingPart": {
+            "NoFunding": false,
+            "Funders": false,
+            "FriendsAndFamily": false,
+            "PublicSectorGrants": false,
+            "AngelInvestment": false,
+            "VentureCapital": false,
+            "PrivateEquity": true,
+            "StockMarketFlotation": true
+          }
+        },
+        {
+          "ContentItemId": "[js: uuid()]",
+          "ContentType": "CompanyDetails",
+          "DisplayText": null,
+          "Latest": true,
+          "Published": true,
+          "Owner": "[js: parameters('AdminUserId')]",
+          "Author": "[js: parameters('AdminUsername')]",
+          "CompanyDetailsPart": {
+            "CompanyName": "TEst1",
+            "CompanyNumber": 212321
+          }
+        }
+      ]
+    }
+  ]
+}
